@@ -1,0 +1,13 @@
+name = "just-imgs"
+main = "src/index.ts"
+compatibility_date = "2023-05-18"
+usage_model = "bundled"
+env = { }
+
+[triggers]
+crons = [ ]
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "just-imgs"
+preview_bucket_name = "r2-test"
