@@ -21,10 +21,12 @@ const jsonReturn = (c: Context, ok: boolean | number, data: any, msg: string) =>
     ok = typeof ok === 'boolean' ? ok : code < 400
     return c.json({
         ok,
-        data,
+        code,
         msg,
-    }, code, {
+        data,
+    }, 200, {
         'Content-Type': 'application/json',
+        "Res-Msg": encodeURI(msg)
     })
 }
 
