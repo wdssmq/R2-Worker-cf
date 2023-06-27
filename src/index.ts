@@ -1,4 +1,4 @@
-import { Hono } from 'hono'
+import { Context, Hono } from 'hono'
 import { cache } from 'hono/cache'
 import { cors } from 'hono/cors'
 import { basicAuth } from 'hono/basic-auth'
@@ -13,6 +13,20 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>()
 const maxAge = 60 * 60 * 24 * 30
 const cacheName = "just-imgs"
+
+// 封装 json 返回
+const jsonReturn = (c: Context, ok: boolean | number, data: any, msg: string) => {
+    // 如果 ok 为数字，则为 http 状态码
+    const code = typeof ok === 'number' ? ok : 200
+    ok = typeof ok === 'boolean' ? ok : code < 400
+    return c.json({
+        ok,
+        data,
+        msg,
+    }, code, {
+        'Content-Type': 'application/json',
+    })
+}
 
 // 设置跨域
 app.use("*",
