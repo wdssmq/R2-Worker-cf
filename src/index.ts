@@ -67,7 +67,7 @@ app.put('/upload', async (c) => {
 
     if (!type) return jsonReturn(c, 400, null, '不支持的图片格式')
 
-    const key = `${name}.${type.suffix}`
+    const key = name.indexOf(`.${type.suffix}`) > -1 ? name : `${name}.${type.suffix}`
     const body = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0))
 
     await c.env.BUCKET.put(key, body, { httpMetadata: { contentType: type.mimeType } })
