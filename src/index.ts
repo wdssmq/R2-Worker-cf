@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { cache } from 'hono/cache'
+import { cors } from 'hono/cors'
 import { basicAuth } from 'hono/basic-auth'
 import { detectType } from './utils'
 
@@ -12,6 +13,17 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>()
 const maxAge = 60 * 60 * 24 * 30
 const cacheName = "just-imgs"
+
+// 设置跨域
+app.use("*",
+    cors({
+        origin: ["*"],
+        credentials: true,
+        allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowHeaders: ["*"],
+        maxAge: 86400,
+    })
+)
 
 // 设置缓存
 app.get(
