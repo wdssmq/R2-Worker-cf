@@ -59,17 +59,20 @@ app.put('/upload', async (c) => {
     const data = await c.req.json()
 
     const { body: base64, name } = data
-    if (!base64) return c.notFound()
+    // console.log(base64);
+    if (!base64) return jsonReturn(c, 400, null, 'base64 不能为空')
 
     const type = detectType(base64)
-    if (!type) return c.notFound()
+    // console.log(type);
+
+    if (!type) return jsonReturn(c, 400, null, '不支持的图片格式')
 
     const key = `${name}.${type.suffix}`
     const body = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0))
 
     await c.env.BUCKET.put(key, body, { httpMetadata: { contentType: type.mimeType } })
 
-    return c.text(key)
+    return jsonReturn(c, true, { key }, '上传成功')
 })
 
 app.get('/:key', async (c) => {
@@ -94,10 +97,7 @@ app.get('/', async (c) => {
             size: object.size,
         }
     })
-    return c.json({ ok: true, data }, 200, {
-        'Content-Type': 'application/json',
-        // 'Cache-Control': `public, max-age=137`,
-    })
+    return jsonReturn(c, true, data, '获取成功')
 })
 
 export default app
