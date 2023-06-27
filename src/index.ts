@@ -67,7 +67,22 @@ app.get('/:key', async (c) => {
     const contentType = object.httpMetadata?.contentType ?? ''
 
     return c.body(data, 200, {
-        'Content-Type': contentType
+        'Content-Type': contentType,
+    })
+})
+
+app.get('/', async (c) => {
+
+    const { objects } = await c.env.BUCKET.list({ prefix: '', limit: 10 })
+    const data = objects.map((object) => {
+        return {
+            key: object.key,
+            size: object.size,
+        }
+    })
+    return c.json({ ok: true, data }, 200, {
+        'Content-Type': 'application/json',
+        // 'Cache-Control': `public, max-age=137`,
     })
 })
 
