@@ -4,3 +4,4 @@ package-lock.json
 .wrangler
 .dev.vars
 wrangler.toml
+.history
