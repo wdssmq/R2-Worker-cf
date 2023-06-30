@@ -1,7 +1,9 @@
 {
   "scripts": {
     "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy --minify src/index.ts"
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "init:toml": "cp wrangler.example.toml wrangler.toml",
+    "postinstall": "npm run init:toml"
   },
   "dependencies": {
     "hono": "^3.2.6"

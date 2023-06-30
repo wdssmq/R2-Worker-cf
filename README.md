@@ -22,7 +22,8 @@ pnpm install
 ### 配置 wrangler 及 R2 存储
 
 ```bash
-cp wrangler.example.toml wrangler.toml
+# install 命令会自动执行复制
+# cp wrangler.example.toml wrangler.toml
 
 ```
 
