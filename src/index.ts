@@ -26,9 +26,19 @@ const jsonReturn = (c: Context, ok: boolean | number, data: [] | object | null, 
         data,
     }, 200, {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
         'Res-Msg': encodeURI(msg),
     })
 }
+
+// 设置缓存
+app.get(
+    '*',
+    cache({
+        cacheName: cacheName,
+        cacheControl: `public, max-age=${maxAge}`,
+    }),
+)
 
 // 设置跨域
 app.use('*',
@@ -38,15 +48,6 @@ app.use('*',
         allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowHeaders: ['*'],
         maxAge: 86400,
-    }),
-)
-
-// 设置缓存
-app.get(
-    '*',
-    cache({
-        cacheName: cacheName,
-        cacheControl: `public, max-age=${maxAge}`,
     }),
 )
 
