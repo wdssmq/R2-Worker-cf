@@ -97,7 +97,9 @@ npm run deploy
 wget  https://www.bing.com/th?id=OHR.Unesco50_ZH-CN3652927413_UHD.jpg -O /tmp/1.jpg
 
 # 上传图片
-echo '{"body" : "'"$( cat /tmp/1.jpg | base64)"'", "name" : "test"}' | curl -XPUT -H  "Content-Type: application/json" -d @-  https://change_user_here:change_pass_here@change_url_here/upload -vvv
+echo '{"body" : "'"$( cat /tmp/1.jpg | base64)"'", "name" : "test"}' \
+| curl -XPUT -H  "Content-Type: application/json" \
+-d @-  https://change_user_here:change_pass_here@change_url_here/upload -vvv
 
 ```
 
