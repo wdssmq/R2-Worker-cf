@@ -12,10 +12,10 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>()
 const maxAge = 60 * 60 * 24 * 30
-const cacheName = "just-imgs"
+const cacheName = 'just-imgs'
 
 // 封装 json 返回
-const jsonReturn = (c: Context, ok: boolean | number, data: any, msg: string) => {
+const jsonReturn = (c: Context, ok: boolean | number, data: [] | object | null, msg: string) => {
     // 如果 ok 为数字，则为 http 状态码
     const code = typeof ok === 'number' ? ok : 200
     ok = typeof ok === 'boolean' ? ok : code < 400
@@ -26,19 +26,19 @@ const jsonReturn = (c: Context, ok: boolean | number, data: any, msg: string) =>
         data,
     }, 200, {
         'Content-Type': 'application/json',
-        "Res-Msg": encodeURI(msg)
+        'Res-Msg': encodeURI(msg),
     })
 }
 
 // 设置跨域
-app.use("*",
+app.use('*',
     cors({
-        origin: ["*"],
+        origin: ['*'],
         credentials: true,
-        allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allowHeaders: ["*"],
+        allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowHeaders: ['*'],
         maxAge: 86400,
-    })
+    }),
 )
 
 // 设置缓存
@@ -47,7 +47,7 @@ app.get(
     cache({
         cacheName: cacheName,
         cacheControl: `public, max-age=${maxAge}`,
-    })
+    }),
 )
 
 // 上传图片鉴权
@@ -70,7 +70,7 @@ app.put('/upload', async (c) => {
     if (!type) return jsonReturn(c, 400, null, '不支持的图片格式')
 
     const key = name.indexOf(`.${type.suffix}`) > -1 ? name : `${name}.${type.suffix}`
-    const body = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0))
+    const body = Uint8Array.from(atob(base64), c => c.charCodeAt(0))
 
     await c.env.BUCKET.put(key, body, { httpMetadata: { contentType: type.mimeType } })
 
