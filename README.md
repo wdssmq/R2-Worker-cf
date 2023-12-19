@@ -67,6 +67,7 @@ wrangler secret list
 
 # 删除 Secrets
 # wrangler secret delete <KEY> [OPTIONS]
+
 ```
 
 
